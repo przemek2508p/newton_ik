@@ -19,3 +19,6 @@ https://newton-physics.github.io/newton/latest/guide/installation.html <br>
         2.2.1 uv pip install pyglet>=2.0 <br> 
         2.2.2 uv pip install imgui-bundleDW <br>
         2.2.3 uv run -m newton.examples basic_urdf <br>
+
+<br><br>
+![Image](https://github.com/user-attachments/assets/da8d39ca-66ba-4a26-b7dc-300df4614989)
