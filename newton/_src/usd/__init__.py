@@ -1,0 +1,67 @@
+# SPDX-FileCopyrightText: Copyright (c) 2025 The Newton Developers
+# SPDX-License-Identifier: Apache-2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+try:
+    # Work around a thread-safety bug in UsdPhysics.LoadUsdPhysicsFromRange
+    # that causes heap corruption (double free / segfault) when USD's internal
+    # TBB thread pool processes stages with many physics prims concurrently.
+    # Setting the concurrency limit to 1 BEFORE any pxr module initializes
+    # TBB is the only reliable mitigation.  The env-var fallback covers the
+    # case where pxr is unavailable.
+    from pxr import Work
+
+    Work.SetConcurrencyLimit(1)
+except Exception:
+    import os
+
+    os.environ.setdefault("PXR_WORK_THREAD_LIMIT", "1")
+
+try:
+    # register the newton schema plugin before any other USD code is executed
+    import newton_usd_schemas  # noqa: F401
+except ImportError:
+    pass
+
+from .utils import (
+    get_attribute,
+    get_attributes_in_namespace,
+    get_custom_attribute_declarations,
+    get_custom_attribute_values,
+    get_float,
+    get_gprim_axis,
+    get_mesh,
+    get_quat,
+    get_scale,
+    get_transform,
+    has_attribute,
+    type_to_warp,
+    value_to_warp,
+)
+
+__all__ = [
+    "get_attribute",
+    "get_attributes_in_namespace",
+    "get_custom_attribute_declarations",
+    "get_custom_attribute_values",
+    "get_float",
+    "get_gprim_axis",
+    "get_mesh",
+    "get_quat",
+    "get_scale",
+    "get_transform",
+    "has_attribute",
+    "type_to_warp",
+    "value_to_warp",
+]
